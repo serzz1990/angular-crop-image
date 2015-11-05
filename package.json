@@ -1,0 +1,20 @@
+{
+  "name": "angularCropImage",
+  "version": "1.0.0",
+  "homepage": "",
+  "description": "Angular crop image",
+  "author": {
+    "name": "Sergey Savin",
+    "url": "https://github.com/serzz1990"
+  },
+  "main": "dist/angular-crop-image.min.js",
+  "devDependencies": {
+    "babel": "^4.7.16",
+    "babel-loader": "^4.0.0",
+    "gulp": "^3.9.0",
+    "gulp-ng-annotate": "^1.1.0",
+    "ng-annotate-webpack-plugin": "^0.1.2",
+    "webpack": "^1.10.1",
+    "webpack-stream": "^2.0.0"
+  }
+}
