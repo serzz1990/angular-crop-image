@@ -1,17 +1,11 @@
 'use strict';
 
-//import Selectable from './services/Selectable';
-//
-//import directiveSelectable from './directives/selectable';
-//import directiveSelectableItem from './directives/selectableItem';
-//import directiveSelectableIgnore from './directives/selectableIgnore';
-//import directiveSelectableHotkey from './directives/selectableHotkey';
-//
+import CropImage from './services/CropImage';
+
+import cropImageFile from './directives/cropImageFile';
+
 
 angular
-	//.module('angularSelectable', [])
-	//.service('Selectable', Selectable)
-	//.directive('selectable', directiveSelectable)
-	//.directive('selectableItem', directiveSelectableItem)
-	//.directive('selectableIgnore', directiveSelectableIgnore)
-	//.directive('selectableHotkey', directiveSelectableHotkey);
+	.module('angularCropImage', [])
+	.service('CropImage', CropImage)
+	.directive('cropImageFile', cropImageFile);

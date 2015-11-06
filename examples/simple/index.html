@@ -1,30 +1,40 @@
 ﻿<!DOCTYPE html>
 <html id="ng-app" ng-app="app">
 
-    <head>
-        <title>Simple example</title>
+<head>
+    <title>Simple example</title>
 
-        <!-- Fix for old browsers -->
-        <script src="../libs/es5-shim.min.js"></script>
-        <script src="../libs/es5-sham.min.js"></script>
-        <script src="../libs/angular-1.4.7.js"></script>
+    <!-- Fix for old browsers -->
+    <script src="../libs/es5-shim.min.js"></script>
+    <script src="../libs/es5-sham.min.js"></script>
+    <script src="../libs/angular-1.4.7.js"></script>
 
-        <script src="../../dist/angularCropImage.min.js"></script>
-        <script src="controllers.js"></script>
+    <script src="../../dist/angularCropImage.min.js"></script>
+    <script src="controllers.js"></script>
 
-        <style>
+    <style>
 
-            html, body { height: 100%; }
-
-
-        </style>
-
+        html, body {
+            height: 100%;
+        }
 
 
-    </head>
-
-    <body ng-controller="AppController">
+    </style>
 
 
-    </body>
+</head>
+
+<body ng-controller="AppController">
+
+
+<div>Select file: <input type="file" crop-image-file /></div>
+
+<div crop-image class="cropArea">
+
+    <img ng-src="{{myCroppedImage}}"/>
+
+</div>
+
+
+</body>
 </html>
