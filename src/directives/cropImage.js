@@ -1,22 +1,23 @@
 'use strict';
 
 
-export default  (CropImage) => {
+export default CropImage => {
+
 
 	return {
 
 		restrict: 'A',
+
 		link: (scope, element, attributes) => {
 
+			var instance;
 			var directiveName = 'cropImage';
 			var zoom = attributes.zoom;
 			var source = attributes[directiveName];
-			var instance;
+			var data = element.data();
 
-			var data = {
-				element : element,
-				pixelRatio : attributes.pixelRatio || 1
-			};
+			data.element = element;
+
 
 			scope[zoom] = scope[zoom] || 0;
 
@@ -34,14 +35,12 @@ export default  (CropImage) => {
 
 			});
 
-			//scope.$watch(zoom, (val, old, scope) => {
-			//
-			//	if( !instance ) return;
-			//
-			//	instance.zoom = val;
-			//
-			//});
 
+			scope.cropImageZoom = value => {
+
+				instance.setZoom(value);
+
+			};
 
 			scope.cropImageZoomIn = rate => {
 
@@ -58,14 +57,18 @@ export default  (CropImage) => {
 
 
 			scope.cropImageCut = () => {
+
 				scope.cropImageModeEdit = false;
 				return instance.crop();
+
 			};
 
 
 			scope.cropImageCancel = () => {
+
 				scope.cropImageModeEdit = false;
 				instance.cancel();
+
 			};
 
 
