@@ -4,6 +4,10 @@
 <head>
     <title>Simple example</title>
 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link type="text/css" rel="stylesheet" href="../../dist/angularCropImage.css">
+
     <!-- Fix for old browsers -->
     <script src="../libs/es5-shim.min.js"></script>
     <script src="../libs/es5-sham.min.js"></script>
@@ -12,29 +16,26 @@
     <script src="../../dist/angularCropImage.min.js"></script>
     <script src="controllers.js"></script>
 
-    <style>
-
-        html, body {
-            height: 100%;
-        }
-
-
-    </style>
-
-
 </head>
 
 <body ng-controller="AppController">
 
 
-<div>Select file: <input type="file" crop-image-file /></div>
+<div class="cropImage">
 
-<div crop-image class="cropArea">
+    <div crop-image="image" data-zoom="zoom" class="cropImage__editor" data-pixel-ratio="2">
 
-    <img ng-src="{{myCroppedImage}}"/>
+        <label class="cropImage__editor-select-image">Править <input type="file" style="display: none;" crop-image-model="image" /></label>
+
+    </div>
+
+    <button ng-click=" cropImageZoomIn(0.1) ">+</button>
+    <button ng-click=" cropImageZoomOut(0.1) ">-</button>
+    <button ng-click=" crop = cropImageCut() ">crop</button>
 
 </div>
 
+    <img ng-src="{{crop}}">
 
 </body>
 </html>

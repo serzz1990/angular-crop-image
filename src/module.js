@@ -1,11 +1,15 @@
 'use strict';
 
 import CropImage from './services/CropImage';
+import CropService from './services/CropService';
 
-import cropImageFile from './directives/cropImageFile';
+import cropImageModel from './directives/cropImageModel';
+import cropImage from './directives/cropImage';
 
 
 angular
 	.module('angularCropImage', [])
 	.service('CropImage', CropImage)
-	.directive('cropImageFile', cropImageFile);
+	.service('CropService', CropService)
+	.directive('cropImageModel', cropImageModel)
+	.directive('cropImage', cropImage);
