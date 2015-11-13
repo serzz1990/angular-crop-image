@@ -21,21 +21,25 @@
 <body ng-controller="AppController">
 
 
-<div class="cropImage">
+<div class="cropImage" ng-class=" {'cropImage__state_edit': cropImageModeEdit} ">
 
-    <div crop-image="image" data-zoom="zoom" class="cropImage__editor" data-pixel-ratio="2">
+    <div crop-image="image" data-zoom="zoom" class="cropImage__editor" data-pixel-ratio="2" >
 
-        <label class="cropImage__editor-select-image">Править <input type="file" style="display: none;" crop-image-model="image" /></label>
+        <label class="cropImage__editor-select">Править <input type="file" style="display: none;" crop-image-model="image" /></label>
+        <a class="cropImage__editor-save" ng-click=" crop = cropImageCut() ">Сохранить</a>
 
     </div>
 
     <button ng-click=" cropImageZoomIn(0.1) ">+</button>
     <button ng-click=" cropImageZoomOut(0.1) ">-</button>
-    <button ng-click=" crop = cropImageCut() ">crop</button>
+    <button ng-click=" cropImageCancel() ">отмена</button>
+
 
 </div>
 
-    <img ng-src="{{crop}}">
+<br/><br/>
+RESULT: <br/>
+    <img width="200" height="200" ng-src="{{crop}}">
 
 </body>
 </html>

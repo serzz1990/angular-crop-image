@@ -20,7 +20,8 @@ export default ($document) => {
 				height: parseInt(this.ratio.width < this.ratio.height ? data.image.height * this.ratio.height : data.image.height * this.ratio.width)
 			};
 
-			console.log('this.pixelRatio',this.pixelRatio);
+			this.saveStyle();
+
 
 			this.position = {
 				x : parseInt((this.size.width - data.element[0].clientWidth) / 2),
@@ -103,6 +104,34 @@ export default ($document) => {
 		}
 
 
+		saveStyle () {
+
+			this.__oldStyle = {};
+
+			for( let i = 0; this.element[0].style.length > i; i++ ){
+
+				let param = this.element[0].style[i];
+				this.__oldStyle[param] = this.element[0].style[param];
+
+			}
+
+
+		}
+
+
+		cancel () {
+
+			for ( let i in this.element[0].style ){
+
+				let param = this.element[0].style[i];
+
+				this.element[0].style[param] = this.__oldStyle[param]||null;
+
+			}
+
+		}
+
+
 		recalcSize () {
 
 			var height,width;
@@ -167,10 +196,6 @@ export default ($document) => {
 			canvas.ctx = canvas.element.getContext('2d');
 			canvas.element.width = this.element[0].clientWidth * this.pixelRatio;
 			canvas.element.height = this.element[0].clientHeight * this.pixelRatio;
-
-			console.log(this.element[0].clientWidth);
-			console.log(this.element[0].clientHeight);
-
 
 			return canvas;
 		}

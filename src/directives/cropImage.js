@@ -28,6 +28,8 @@ export default  (CropImage) => {
 				data.image = new Image();
 				data.image.src = src;
 
+				scope.cropImageModeEdit = true;
+
 				data.image.onload = () => element.data(directiveName, (instance = new CropImage(data)));
 
 			});
@@ -47,6 +49,7 @@ export default  (CropImage) => {
 
 			};
 
+
 			scope.cropImageZoomOut = rate => {
 
 				instance.zoomOut(rate);
@@ -54,7 +57,16 @@ export default  (CropImage) => {
 			};
 
 
-			scope.cropImageCut = () => instance.cut();
+			scope.cropImageCut = () => {
+				scope.cropImageModeEdit = false;
+				return instance.cut();
+			};
+
+
+			scope.cropImageCancel = () => {
+				scope.cropImageModeEdit = false;
+				instance.cancel();
+			};
 
 
 		}

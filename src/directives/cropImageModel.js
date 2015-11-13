@@ -24,9 +24,9 @@ export default  (CropImage) => {
 				    reader = new FileReader();
 
 
-				if( !/image/.test(file.type) ){
+				if( !file || !/image/.test(file.type) ){
 					// error this file not Image;
-
+					return;
 				}
 
 				reader.onload = () => {
