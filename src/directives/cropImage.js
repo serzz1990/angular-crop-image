@@ -59,7 +59,7 @@ export default  (CropImage) => {
 
 			scope.cropImageCut = () => {
 				scope.cropImageModeEdit = false;
-				return instance.cut();
+				return instance.crop();
 			};
 
 

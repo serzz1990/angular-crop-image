@@ -167,7 +167,7 @@ export default ($document) => {
 		}
 
 
-		cut () {
+		crop () {
 
 			var canvas = this.getCanvas();
 			var scale = this.ratio.width < this.ratio.height? this.ratio.height * this.zoom: this.ratio.width * this.zoom;
@@ -180,7 +180,24 @@ export default ($document) => {
 
 			canvas.ctx.drawImage(this.image, 0, 0);
 
-			return this.result = canvas.element.toDataURL('image/jpg');
+			this.result = canvas.element.toDataURL('image/jpg');
+			//this.image.src = this.result;
+			//this.image.width = canvas.element.width;
+			//this.image.height = canvas.element.height;
+			//
+			//this.size = {
+			//	width: this.image.width,
+			//	height: this.image.height
+			//};
+			//
+			//this.position = {
+			//	x: 0,
+			//	y: 0
+			//};
+			//
+			//_private.methods.setCss(this);
+
+			return this.result;
 
 		}
 
