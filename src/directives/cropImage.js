@@ -12,15 +12,9 @@ export default CropImage => {
 
 			var instance;
 			var directiveName = 'cropImage';
-			var zoom = attributes.zoom;
 			var source = attributes[directiveName];
-			var data = element.data();
 
-			data.element = element;
-
-
-			scope[zoom] = scope[zoom] || 0;
-
+			var data = angular.extend({}, attributes);
 
 			scope.$watch(source, src => {
 
@@ -31,7 +25,7 @@ export default CropImage => {
 
 				scope.cropImageModeEdit = true;
 
-				data.image.onload = () => element.data(directiveName, (instance = new CropImage(data)));
+				data.image.onload = () => element.data(directiveName, (instance = new CropImage( element, data )));
 
 			});
 

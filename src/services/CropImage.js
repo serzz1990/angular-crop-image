@@ -8,18 +8,22 @@ export default ($document) => {
 	class CropImage {
 
 
-		constructor (data) {
+		constructor (element, data) {
 
-			angular.extend(this, CropImage.DEFAULT, data);
+			this.$element = element;
+			this.data = angular.extend({}, CropImage.DEFAULT, data);
 
-			this.ratio    = _private.methods.getRatio(this);
-			this.size     = _private.methods.getSize(this);
-			this.position = _private.methods.getCenterPosition(this);
+			this.checkZoom();
+
+			this.data.ratio    = _private.methods.getRatio(this);
+			this.data.size     = _private.methods.getSize(this);
+			this.data.position = _private.methods.getCenterPosition(this);
 
 			this.__last = this.getStyle();
 
 			_private.methods.setCss( this );
 
+			console.log(this);
 			this.listen();
 		}
 
@@ -28,8 +32,7 @@ export default ($document) => {
 
 			var _self = this;
 
-
-			this.element
+			this.$element
 				.on('mousedown', startChangePosition)
 				.on('touchstart', startChangePosition);
 
@@ -72,7 +75,7 @@ export default ($document) => {
 
 		setZoom (val) {
 
-			this.zoom = val < 1? 1: val;
+			this.data.zoom = val < 1? 1: val;
 
 			this.recalcSize();
 		}
@@ -80,38 +83,50 @@ export default ($document) => {
 
 		zoomIn (rate) {
 
-			this.zoom += rate;
+			this.data.zoom += rate;
+
+			this.checkZoom();
 
 			this.recalcSize();
 
 		}
-
 
 		zoomOut (rate) {
 
-			this.zoom -= rate;
+			this.data.zoom -= rate;
 
-			if( this.zoom < 1 ) this.zoom = 1;
+			this.checkZoom();
 
 			this.recalcSize();
 
 		}
 
+		checkZoom () {
+
+			if(this.data.zoom > this.data.maxZoom) this.data.zoom = +this.data.maxZoom;
+			else if( this.data.zoom < this.data.minZoom ) this.data.zoom = +this.data.minZoom;
+			else this.data.zoom = +this.data.zoom;
+
+		}
 
 		getStyle () {
 
-			var data = {
-				element: this.element,
-				image : {
-					src: (this.element[0].style.backgroundImage || 'none').replace(/^url\(/,'').replace(/\)$/,'')
-				},
-				size : {
-					width : this.element[0].clientWidth,
-					height : this.element[0].clientHeight
+			var instance = {
+				$element: this.$element,
+				data : {
+					image : {
+						src: (this.$element[0].style.backgroundImage || 'none').replace(/^url\(/,'').replace(/\)$/,'')
+					},
+					size : {
+						width : this.$element[0].clientWidth,
+						height : this.$element[0].clientHeight
+					}
 				}
 			};
 
-			return angular.extend({}, CropImage.DEFAULT, data);
+			instance.data = angular.extend({}, CropImage.DEFAULT, instance.data);
+
+			return instance;
 
 		}
 
@@ -127,16 +142,16 @@ export default ($document) => {
 
 			var size     = _private.methods.getSize(this);
 
-			this.position.x += (size.width - this.size.width)/2;
-			this.position.y += (size.height - this.size.height)/2;
+			this.data.position.x += (size.width - this.data.size.width)/2;
+			this.data.position.y += (size.height - this.data.size.height)/2;
 
-			this.size = size;
+			this.data.size = size;
 
-			this.checkPosition ();
+			this.__checkPosition ();
 
-			this.element.css({
+			this.$element.css({
 				backgroundSize: size.width + 'px ' + size.height + 'px',
-				backgroundPosition: (-1*this.position.x) + 'px ' + (-1*this.position.y) + 'px'
+				backgroundPosition: (-1*this.data.position.x) + 'px ' + (-1*this.data.position.y) + 'px'
 			});
 
 			return this;
@@ -148,33 +163,33 @@ export default ($document) => {
 
 			var instance = this;
 			var canvas = this.getCanvas();
-			var scale = this.ratio.width < this.ratio.height? this.ratio.height * this.zoom: this.ratio.width * this.zoom;
+			var scale = this.data.ratio.width < this.data.ratio.height? this.data.ratio.height * this.data.zoom: this.data.ratio.width * this.data.zoom;
 
 			canvas.ctx.clearRect(0, 0, canvas.element.width, canvas.element.height);
 			canvas.ctx.restore();
 			canvas.ctx.save();
 
-			canvas.ctx.setTransform(scale*this.pixelRatio, 0, 0, scale*this.pixelRatio, -1*this.position.x*this.pixelRatio, -1*this.position.y*this.pixelRatio);
-			canvas.ctx.drawImage(this.image, 0, 0);
+			canvas.ctx.setTransform(scale*this.data.pixelRatio, 0, 0, scale*this.data.pixelRatio, -1*this.data.position.x*this.data.pixelRatio, -1*this.data.position.y*this.data.pixelRatio);
+			canvas.ctx.drawImage(this.data.image, 0, 0);
 
 
-			this.image = new Image ();
-			this.image.src = canvas.element.toDataURL('image/jpg');
-			this.image.onload = () => {
+			this.data.image = new Image ();
+			this.data.image.src = canvas.element.toDataURL('image/jpg');
+			this.data.image.onload = () => {
 
-				instance.image.width = instance.image.width / instance.pixelRatio;
-				instance.image.height = instance.image.height / instance.pixelRatio;
+				instance.data.image.width = instance.data.image.width / instance.data.pixelRatio;
+				instance.data.image.height = instance.data.image.height / instance.data.pixelRatio;
 
-				instance.zoom     = 1;
-				instance.ratio    = _private.methods.getRatio(instance);
-				instance.size     = _private.methods.getSize(instance);
-				instance.position = _private.methods.getCenterPosition(instance);
+				instance.data.zoom     = 1;
+				instance.data.ratio    = _private.methods.getRatio(instance);
+				instance.data.size     = _private.methods.getSize(instance);
+				instance.data.position = _private.methods.getCenterPosition(instance);
 
 				_private.methods.setCss(instance);
 
 			};
 
-			return this.image.src;
+			return this.data.image.src;
 
 		}
 
@@ -188,8 +203,8 @@ export default ($document) => {
 			var canvas = this.__canvas = {};
 			canvas.element = document.createElement('canvas');
 			canvas.ctx = canvas.element.getContext('2d');
-			canvas.element.width = this.element[0].clientWidth * this.pixelRatio;
-			canvas.element.height = this.element[0].clientHeight * this.pixelRatio;
+			canvas.element.width = this.$element[0].clientWidth * this.data.pixelRatio;
+			canvas.element.height = this.$element[0].clientHeight * this.data.pixelRatio;
 
 			return canvas;
 
@@ -197,16 +212,20 @@ export default ($document) => {
 
 
 
-		checkPosition () {
+		__checkPosition () {
 
-			var fx = this.size.width - this.element[0].clientWidth;
-			var fy = this.size.height - this.element[0].clientHeight;
+			if( this.data.border === 'false' || !this.data.border) {
+				return;
+			}
 
-			if( fx < this.position.x ) this.position.x = fx;
-			else if( this.position.x < 0 ) this.position.x = 0;
+			var fx = this.data.size.width - this.$element[0].clientWidth;
+			var fy = this.data.size.height - this.$element[0].clientHeight;
 
-			if( fy < this.position.y ) this.position.y = fy;
-			else if( this.position.y < 0 ) this.position.y = 0;
+			if( fx < this.data.position.x ) this.data.position.x = fx;
+			else if( this.data.position.x < 0 ) this.data.position.x = 0;
+
+			if( fy < this.data.position.y ) this.data.position.y = fy;
+			else if( this.data.position.y < 0 ) this.data.position.y = 0;
 
 		}
 
@@ -227,15 +246,15 @@ export default ($document) => {
 			let _lastEvent = event.type == 'touchmove'? this.__changePosition.touches[0]: this.__changePosition;
 
 
-			this.position.x += _lastEvent.clientX - _event.clientX;
-			this.position.y += _lastEvent.clientY - _event.clientY;
+			this.data.position.x += _lastEvent.clientX - _event.clientX;
+			this.data.position.y += _lastEvent.clientY - _event.clientY;
 
 			this.__changePosition = event;
 
 
-			this.checkPosition();
+			this.__checkPosition();
 
-			this.element.css({'backgroundPosition': (-1*this.position.x) + 'px ' + (-1*this.position.y) + 'px'})
+			this.$element.css({'backgroundPosition': (-1*this.data.position.x) + 'px ' + (-1*this.data.position.y) + 'px'})
 
 		}
 
@@ -253,7 +272,6 @@ export default ($document) => {
 
 	CropImage.DEFAULT = {
 
-		element: null,
 		image : {
 			src : null,
 			width: 0,
@@ -267,8 +285,11 @@ export default ($document) => {
 			width: 0,
 			height: 0
 		},
+		pixelRatio : 1,
 		zoom : 1,
-		pixelRatio : 1
+		maxZoom : 5,
+		minZoom : 1,
+		border : true
 
 	};
 
@@ -285,15 +306,15 @@ export default ($document) => {
 			getCenterPosition : instance => {
 
 				return {
-					x : parseInt((instance.size.width - instance.element[0].clientWidth) / 2),
-					y: parseInt((instance.size.height -  instance.element[0].clientHeight) / 2)
+					x : parseInt((instance.data.size.width - instance.$element[0].clientWidth) / 2),
+					y: parseInt((instance.data.size.height -  instance.$element[0].clientHeight) / 2)
 				};
 
 			},
 
 			getSize : instance => {
 
-				let {ratio,image,zoom} = instance;
+				let {ratio,image,zoom} = instance.data;
 
 				return {
 					width: parseInt( ratio.width < ratio.height ? image.width * ratio.height * zoom: image.width * ratio.width * zoom),
@@ -305,18 +326,18 @@ export default ($document) => {
 			getRatio : instance => {
 
 				return {
-					width: instance.element[0].clientWidth / instance.image.width,
-					height: instance.element[0].clientHeight / instance.image.height
+					width: instance.$element[0].clientWidth / instance.data.image.width,
+					height: instance.$element[0].clientHeight / instance.data.image.height
 				}
 
 			},
 
 			setCss : instance => {
 
-				instance.element.css({
-					backgroundImage: 'url('+instance.image.src+')',
-					backgroundPosition: (-1*instance.position.x) + 'px ' + (-1*instance.position.y) + 'px',
-					backgroundSize: instance.size.width + 'px ' + instance.size.height + 'px',
+				instance.$element.css({
+					backgroundImage: 'url('+instance.data.image.src+')',
+					backgroundPosition: (-1*instance.data.position.x) + 'px ' + (-1*instance.data.position.y) + 'px',
+					backgroundSize: instance.data.size.width + 'px ' + instance.data.size.height + 'px',
 					backgroundRepeat: 'no-repeat'
 				});
 

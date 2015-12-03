@@ -23,7 +23,7 @@
 
 <div class="cropImage" ng-class=" {'cropImage__state_edit': cropImageModeEdit} ">
 
-    <div style="background-image: url(../images/pet_racd.png)" crop-image="image" data-zoom="zoom" class="cropImage__editor" data-pixel-ratio="2" >
+    <div style="background-image: url(../images/pet_racd.png)" crop-image="image" data-min-zoom="0.5" data-max-zoom="4" data-zoom="1" data-border="false" class="cropImage__editor" data-pixel-ratio="2" >
 
         <label class="cropImage__editor-select">Править <input type="file" style="display: none;" crop-image-model="image" /></label>
         <a class="cropImage__editor-save" ng-click=" crop = cropImageCut() ">Сохранить</a>
