@@ -32,11 +32,15 @@ export default CropImage => {
 
 			scope.cropImageZoom = value => {
 
+				if( !instance ) return;
+
 				instance.setZoom(value);
 
 			};
 
 			scope.cropImageZoomIn = rate => {
+
+				if( !instance ) return;
 
 				instance.zoomIn(rate);
 
@@ -45,6 +49,8 @@ export default CropImage => {
 
 			scope.cropImageZoomOut = rate => {
 
+				if( !instance ) return;
+
 				instance.zoomOut(rate);
 
 			};
@@ -52,7 +58,12 @@ export default CropImage => {
 
 			scope.cropImageCut = () => {
 
+				if( !instance ) return;
+
 				scope.cropImageModeEdit = false;
+
+				instance.disabled = true;
+
 				return instance.crop();
 
 			};
@@ -60,8 +71,13 @@ export default CropImage => {
 
 			scope.cropImageCancel = () => {
 
+				if( !instance ) return;
+
 				scope.cropImageModeEdit = false;
+
 				instance.cancel();
+
+				instance.disabled = true;
 
 			};
 

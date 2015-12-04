@@ -24,6 +24,7 @@ export default ($document) => {
 			_private.methods.setCss( this );
 
 			console.log(this);
+
 			this.listen();
 		}
 
@@ -40,6 +41,8 @@ export default ($document) => {
 
 			function startChangePosition (event) {
 
+				if( _self.__disabled ) return;
+
 				_self.__startChangePosition(event);
 
 				$document
@@ -52,6 +55,7 @@ export default ($document) => {
 			function updatePosition (event) {
 
 				_self.__updatePosition(event);
+
 				return false;
 
 			}
@@ -83,6 +87,8 @@ export default ($document) => {
 
 		zoomIn (rate) {
 
+			if( this.__disabled ) return;
+
 			this.data.zoom += rate;
 
 			this.checkZoom();
@@ -92,6 +98,8 @@ export default ($document) => {
 		}
 
 		zoomOut (rate) {
+
+			if( this.__disabled ) return;
 
 			this.data.zoom -= rate;
 
@@ -132,6 +140,8 @@ export default ($document) => {
 
 
 		cancel () {
+
+			if( this.__disabled ) return;
 
 			_private.methods.setCss(this.__last);
 
@@ -266,6 +276,9 @@ export default ($document) => {
 
 		}
 
+		set disabled (disabled) {
+			this.__disabled = disabled;
+		}
 
 	}
 
