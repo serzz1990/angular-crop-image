@@ -23,8 +23,6 @@ export default ($document) => {
 
 			_private.methods.setCss( this );
 
-			console.log(this);
-
 			this.listen();
 		}
 

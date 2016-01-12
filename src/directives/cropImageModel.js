@@ -6,17 +6,10 @@ export default  (CropImage) => {
 	return {
 
 		restrict: 'A',
-		link: (scope, element, attributes) => {
-
-			var dirName = 'cropImageModel';
-			var model = attributes[dirName];
-
-			if( !attributes[dirName] ){
-
-				throw Error('No model name in attr crop-image-model');
-
-			}
-
+		scope: {
+			cropImageModel : '='
+		},
+		link: (scope, element) => {
 
 			element.on('change', function(){
 
@@ -31,7 +24,7 @@ export default  (CropImage) => {
 
 				reader.onload = () => {
 
-					scope[model] = reader.result;
+					scope.cropImageModel = reader.result;
 					scope.$apply();
 
 				};

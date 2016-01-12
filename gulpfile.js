@@ -33,11 +33,11 @@ gulp.task( 'build', function() {
                         add: true
                     }),
 
-                    //new webpack.optimize.UglifyJsPlugin({
-                    //    compress: {
-                    //        warnings: false
-                    //    }
-                    //})
+                    new webpack.optimize.UglifyJsPlugin({
+                        compress: {
+                            warnings: false
+                        }
+                    })
 
                 ],
                 devtool: 'source-map',
