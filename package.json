@@ -1,6 +1,6 @@
 {
   "name": "angularCropImage",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "homepage": "",
   "description": "Angular crop image",
   "author": {
@@ -20,8 +20,17 @@
     "gulp-autoprefixer": "3.1.0",
     "gulp-csso": "1.0.1"
   },
-  "dependencies": {
-    "angular": "^1.4.8",
-    "es5-shim": "^4.4.1"
+  "maintainers": [
+    {
+      "name": "whooooop",
+      "email": "serzz1990@gmail.com"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:serzz1990/angular-crop-image.git"
+  },
+  "bugs": {
+    "url": "https://github.com/serzz1990/angular-crop-image/issues"
   }
 }
