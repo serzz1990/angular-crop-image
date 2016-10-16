@@ -1,8 +1,6 @@
 'use strict';
 
-
-export default ($document) => {
-
+module.exports = ['$document', function ($document) {
 
 
 	class CropImage {
@@ -362,10 +360,5 @@ export default ($document) => {
 
 	return CropImage;
 
-}
 
-
-
-module.exports.$inject = [
-	'$document'
-];
+}];
