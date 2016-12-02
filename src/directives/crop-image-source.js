@@ -1,30 +1,28 @@
 'use strict';
 
 
-module.exports = ['CropImage', function (CropImage) {
+module.exports = function () {
 
 	return {
 
 		restrict: 'A',
-		scope: {
-			cropImageModel : '='
-		},
-		link: (scope, element) => {
+		require: 'ngModel',
+		link: (scope, element, attrs, ngModel) => {
 
-			element.on('change', function(){
+			element.on('change', function () {
 
 				var file = this.files[0],
 				    reader = new FileReader();
 
 
-				if( !file || !/image/.test(file.type) ){
+				if (!file || !/image/.test(file.type)) {
 					// error this file not Image;
 					return;
 				}
 
 				reader.onload = () => {
 
-					scope.cropImageModel = reader.result;
+					ngModel.$setViewValue(reader.result);
 					scope.$apply();
 
 				};
@@ -37,4 +35,4 @@ module.exports = ['CropImage', function (CropImage) {
 
 	};
 
-}]
+};

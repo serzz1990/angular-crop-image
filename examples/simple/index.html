@@ -6,14 +6,10 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Fix for old browsers -->
-    <script src="../../node_modules/es5-shim/es5-shim.min.js"></script>
-    <script src="../../node_modules/es5-shim/es5-sham.min.js"></script>
+    <script src="../libs/angular.min.js"></script>
 
-    <script src="../../node_modules/angular/angular.min.js"></script>
-
-    <link type="text/css" rel="stylesheet" href="../../dist/angularCropImage.css">
-    <script src="../../dist/angularCropImage.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="../../dist/angular-crop-image.css">
+    <script src="../../dist/angular-crop-image.js"></script>
 
     <script src="controllers.js"></script>
 
@@ -26,7 +22,7 @@
 
     <div style="background-image: url(../images/pet_racd.png)" crop-image="image" data-min-zoom="0.5" data-max-zoom="4" data-zoom="1" data-border="false" class="cropImage__editor" data-pixel-ratio="2" >
 
-        <label class="cropImage__editor-select">Править <input type="file" style="display: none;" crop-image-model="image" /></label>
+        <label class="cropImage__editor-select">Править <input crop-image-source type="file" style="display: none;" ng-model="image" /></label>
         <a class="cropImage__editor-save" ng-click=" crop = cropImageCut() ">Сохранить</a>
 
     </div>
